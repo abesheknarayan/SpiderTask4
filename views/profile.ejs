@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>User Profile</title>
+   
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="/stylesheets/profile.css">
+    <link href="https://fonts.googleapis.com/css?family=Pacifico&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Orbitron&display=swap" rel="stylesheet">
+</head>
+<body>
+
+        <nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-dark">
+                <a class="navbar-brand" href="#">MovieDb</a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                  <span class="navbar-toggler-icon"></span>
+                </button>
+              
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                  <ul class="navbar-nav mr-auto">
+                    <li class="nav-item active">
+                      <a class="nav-link" href="/home">Home <span class="sr-only">(current)</span></a>
+                    </li>
+                    <li class="nav-item active">
+                      <a class="nav-link" href="/user/profile">Profile</a>
+                    </li>
+                    <li class="nav-item active">
+                      <a  class="nav-link"  href="/explore">Explore</a>
+                      
+                    </li>
+                   <li  class="nav-item active">
+                      <iframe src="https://www.facebook.com/plugins/share_button.php?href=http%3A%2F%2Flocalhost%3A3000%2Fuser%2Fprofile&layout=button_count&size=large&width=84&height=28&appId" width="84" height="28" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowTransparency="true" allow="encrypted-media"  ></iframe>
+                      
+                          
+                     
+
+                   </li>
+                   <li  class="nav-item active" >
+                      <a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button " data-show-count="false">Tweet</a><script async src="https://platform.twitter.com/widgets.js" charset="utf-8" ></script>
+                   </li>
+                  
+            
+                   
+                  </ul>
+                  <ul class="navbar-nav  justify-content-end">
+                        <li class="nav-item">
+                                <span class="navbar-text" style="padding-right: 20px;">
+                                        Logged in as <%= user.username %>
+                                      </span>
+                        </li>
+           <li class="nav-item active">
+               <a class="nav-link " href="/logout">Logout</a>
+            </li>
+          
+
+                  </ul>
+                 
+                </div>
+              </nav>
+
+<div id="movies" class="container" >
+ 
+<div id="uprofile" >
+ 
+ <h2 style="text-align: center;font-family: 'Pacifico', cursive;font-size: 40px;">User Profile</h2>
+ <h4 style="text-align: center;padding:10px;font-family: 'Orbitron', sans-serif;
+ ">Username:<%= user.username %></h4>
+ <div style="text-align: center"> 
+ <% if(user.privacy=="public"){ %>
+  <input type="radio" name="opt" value="public" checked="true" onclick="radfn(this)">Public
+  <input type="radio" name="opt" value="private" onclick="radfn(this)">Private
+ 
+<% } %>
+<% if(user.privacy=="private"){ %>
+  <input type="radio" name="opt" value="public"  onclick="radfn(this)">Public
+  <input type="radio" name="opt" value="private" checked="true" onclick="radfn(this)">Private
+ 
+<% } %>
+</div>
+<p id="pmsg"></p>
+
+
+
+</div>
+
+ 
+   <div id="fav"  >
+       <h2 class="title">Favourites</h2>
+       <div id="favshidden" style="display: none">
+    <% if(user.fav.length>0){ %>
+        <% user.fav.forEach(function(favm){ %>
+        <p class="favs"><%= favm.imdbid %></p>
+        <% }) %>
+          <% } %>
+   
+        </div>
+        <% if(user.fav.length==0){ %>
+          <div class="mlist">
+         <p>No movies added</p>
+         <form action="/home">
+        <button class="btn btn-secondary">Add</button>
+        </form>
+          <%   }   %>
+          </div>
+          <div id="favs2" class="card-columns" >
+
+          </div>
+
+   </div>
+   <div id="watcheddiv">
+    <h2 class="title">Watched</h2>
+    <div id="watchhide" style="display: none">
+    <% if(user.watched.length>0){ %>
+        <% user.watched.forEach(function(wat){ %>
+        <p class="watched"><%= wat.imdbid %></p>
+        <% }) %>
+          <% } %>
+        </div>
+        <% if(user.watched.length==0){ %>
+          <div class="mlist">
+          <p>No movies added</p>
+          <form action="/home">
+         <button class="btn btn-secondary"> Add</button>
+         </form>
+           <%   }   %>
+          </div>
+        <div id="watched2" class="card-columns">
+
+
+        </div>
+   </div>
+<div id="towatchdiv">
+<h2 class="title">To watch</h2>
+<div id="towatchhide" style="display: none">
+        <% if(user.wantto.length>0){ %>
+            <% user.wantto.forEach(function(want){ %>
+            <p class="towatch"><%= want.imdbid %></p>
+            <% }) %>
+              <% } %>
+            </div>
+            <div class="mlist">
+            <% if(user.wantto.length==0){ %>
+              <p>No movies added</p>
+              <form action="/home">
+             <button class="btn btn-secondary">Add</button>
+             </form>
+               <%   }   %>
+              </div>
+  <div id="towatch2" class="card-columns">
+
+  </div>
+
+</div>
+</div>
+<div id="view">
+
+    
+    </div>
+    <div id="youtube"></div>    
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+<script src="/js/profile.js"></script>
+</body>
+</html>

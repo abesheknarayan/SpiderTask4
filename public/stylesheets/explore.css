@@ -1,0 +1,56 @@
+body{
+
+    background-color: #435964;
+    margin: 0;
+    border: 0;
+    padding-top: 70px;
+
+}
+.nav-link:hover{
+    background-color: rgba(0,0,0,0.8);
+    color:white;
+    
+    }
+    #view{
+        padding-top:30px;
+        margin-left: 10px;
+    }
+    #view p{
+        color: #D2D7D9;
+    }
+    .title{
+        color: #D2D7D9;
+        border-bottom:2px solid  #D2D7D9;
+        text-align: center;
+    }
+    .lbl{
+        color:#57B56B;
+    
+    }
+    #trailer{
+        color:white;
+        border-bottom: 1px solid #D2D7D9;
+        text-align: center;
+    }
+.username{
+    color:#57B56B;
+}
+
+#mdetail{
+    margin-left: 10px;
+    padding-bottom: 30px;
+}
+.mlist{
+    background-color: #20303C;
+    color: white;
+    padding:10px;
+    border-radius:5px;
+    margin:1px;
+}
+.mlist:hover{
+background-color: #1B7F79;
+}
+#tv{
+    margin-left: 20%;
+    margin-right:20%
+}

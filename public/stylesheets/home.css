@@ -1,0 +1,117 @@
+body{
+    background-color: #435964;
+    margin: 0;
+    border: 0;
+    padding-top: 50px;
+
+
+}
+#search{
+    max-width: 400px;
+    
+    margin:0.5%;
+    
+   
+    
+}
+
+
+#select{
+margin-right: 2%;
+max-width:150px;
+margin:0.5%;
+    
+}
+#searchbtn{
+    
+    margin-top:6.5px;
+    
+}
+#view{
+    padding-top:30px;
+    margin-left: 10px;
+}
+#view p{
+    color: #D2D7D9;
+}
+#searchmsg{
+color: white;
+text-align: center;
+display: block;
+}
+#trailer{
+    color:white;
+    border-bottom: 1px solid #D2D7D9;
+    text-align: center;
+}
+.lbl{
+    color:#57B56B;
+
+}
+.movie{
+    max-width: 340px;
+    min-height: 612px;
+}
+img{
+    
+    height: 450px;
+}
+.nav-link:hover{
+background-color: rgba(0,0,0,0.8);
+color:white;
+
+}
+#searchdiv{
+    padding: 30px;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    background-color: #435964;
+    
+    
+}
+.card-body{
+    background-color: #20303C;
+    color: white
+}
+.card-columns{
+    column-gap: 40px;
+}
+#movies
+{
+
+    background-color: #435964;
+    column-count: 5;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+
+
+}
+#searchresults{
+    background-color: #435964;
+    column-count: 5;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around
+
+}
+
+.card{
+    border: 0px solid white;
+    width: 450px;
+    height: 570px;
+   
+    
+
+}
+
+#mdetail{
+    
+    padding-bottom: 30px;
+}
+#tv{
+    margin-left: 20%;
+    margin-right:20%
+}

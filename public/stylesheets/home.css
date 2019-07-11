@@ -14,7 +14,20 @@ body{
    
     
 }
-
+.coms{
+    background-color: #20303C;
+    color:white;
+}
+#comform{
+    padding: 20px;
+}
+#likediv{
+    text-align: center;
+    padding: 5px;
+}
+#addcom{
+    margin:10px;
+}
 
 #select{
 margin-right: 2%;
@@ -22,6 +35,18 @@ max-width:150px;
 margin:0.5%;
     
 }
+#comhead{
+    text-align: center;
+    color:white;
+    font-weight: 600;
+    font-family: sans-serif;
+    border-bottom: 1px solid white;
+}
+#authorize-button,#signout-button{
+    display: none;
+}
+
+
 #searchbtn{
     
     margin-top:6.5px;

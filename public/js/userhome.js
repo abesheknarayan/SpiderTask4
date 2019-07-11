@@ -1,6 +1,69 @@
 
 
+
 // alert("connected");
+
+
+const CLIENT_ID='143192132466-25687un7laao1bsk6k9qm26tft59fd4l.apps.googleusercontent.com';
+const DISCOVERY_DOCS = [
+    'https://www.googleapis.com/discovery/v1/apis/youtube/v3/rest'
+  ];
+  const SCOPES = 'https://www.googleapis.com/auth/youtube.force-ssl';
+  
+  const authorizeButton = document.getElementById('authorize-button');
+  const signoutButton = document.getElementById('signout-button');
+
+function handleClientLoad()
+{
+    gapi.load('client:auth2',initClient);
+}
+function initClient(){
+    gapi.client.init({
+        discoveryDocs:DISCOVERY_DOCS,
+        clientId:CLIENT_ID,
+        scope:SCOPES
+    }).then(function()
+    {
+
+        gapi.auth2.getAuthInstance().isSignedIn.listen(updateSigninStatus);
+
+        updateSigninStatus(gapi.auth2.getAuthInstance().isSignedIn.get());
+
+
+        authorizeButton.onclick=handleAuthClick;
+        signoutButton.onclick=handleSignoutClick;
+    })
+}
+
+
+function updateSigninStatus(isSignedIn)
+{
+    if(isSignedIn)
+{
+    authorizeButton.style.display="none";
+    signoutButton.style.display="block";
+    console.log("signed in successfully");
+}
+else{
+    authorizeButton.style.display="block";
+    signoutButton.style.display="none";
+}
+}
+
+function handleAuthClick()
+{
+    gapi.auth2.getAuthInstance().signIn();
+}
+
+function handleSignoutClick()
+{
+    gapi.auth2.getAuthInstance().signOut();
+}
+
+
+
+
+
 var moviediv=document.querySelector("#movies");
 var movie=document.querySelectorAll(".movie");
 var showmoives=document.querySelector("#showmoives");
@@ -14,7 +77,15 @@ var searchdiv=document.querySelector("#searchdiv");
 var search=document.querySelector("#search");
 var smg=document.querySelector("#searchmsg");
 var searchbtn=document.querySelector("searchbtn");
+var comments=document.querySelector("#comments");
+
 smg.style.display="none";
+
+var allcomments=[];
+
+
+
+
 search.addEventListener("onkeypress",function(e)
 {
     
@@ -102,7 +173,7 @@ function btnfn(e)
     <button name="${movie.imdbID}" class="btn btn-light"  onclick="watchfn(this)" > Watch later </button>
     </div>
 
-    
+  
     <h2 id="trailer">Trailer</h2>
     
     
@@ -112,6 +183,7 @@ moviediv.style.display="none";
 document.querySelector("#searchresults").style.display="none";
 searchdiv.style.display="none";
 yfn(movie.Title);
+
 
 
         })
@@ -145,16 +217,74 @@ let loadMainVideo = function () {
         <iframe width="700" height="393"  class="embed-responsive-item" src="https://www.youtube.com/embed/${id}" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
         </div>
         </div>
-        <button onclick="likefn(this)" name="${id}" id="like" >like</button>
-        <button onclick="likefn(this)" name="${id}"  id="dislike" >dislike</button>
+        <div id="likediv">
+        <button onclick="likefn(this)" name="${id}" class="btn btn-info" id="like" >Like Trailer</button>
+        <div>
         
+        <div class="container" id="comform">
+        <input type="text" name="comment" id="cmt" class="form-control" style:"margin:10px;" placeholder="type your comment">
+        <button name="${id}" id="addcom" onclick="addcom(this)" class="btn btn-outline-success"  >Add comment</button> 
+         </div>
+         <h2 class="container" id="comhead">Comments</h2>
+          
         `
+        getcom(id);
+        discom();
       })
       .catch(err => console.log(err))
   }
   
   loadMainVideo();
 }
+
+function getcom(id)
+{
+    fetch(`/comment/${id}`)
+    .then(function(res)
+    {
+        return res.json();
+    })
+    .then(function(data)
+    {
+        //   console.log(data.cmt);
+          data.cmt.forEach(function(c)
+          {
+         var obj={
+             user:c.user,
+             comment:c.comment
+         }
+         allcomments.push(obj);
+
+          })
+
+        
+      
+    })
+    .then(function ()
+    {
+        var output="";
+        allcomments.forEach(function(c)
+{
+output+=`
+
+<div class="coms container">
+<p><strong>${c.user}</strong></p>
+<p>${c.comment}</p>
+</div>`
+   
+comments.innerHTML=output;
+})
+
+    })
+    .catch(function(err)
+    {
+        console.log(err);
+    })
+}
+
+
+
+
 function likefn(e)
 {
 var mid=e.name;
@@ -208,6 +338,56 @@ function watchfn(e)
     {
         console.log(err);
     })
+}
+function addcom(e)
+{
+    let comment=document.querySelector("#cmt").value;
+    var vid=e.name;
+    fetch("/user")
+    .then(function(res){
+     return res.json()
+    })
+    .then(function(user){
+        console.log(user);
+        var obj={
+      user:user.user,
+      comment:comment
+
+        }
+
+        allcomments.push(obj);
+        var output="";
+        allcomments.forEach(function(c)
+{
+output+=`
+
+<div class="coms container">
+<p>${c.user}</p>
+<p>${c.comment}</p>
+</div>`
+   
+comments.innerHTML=output;
+})
+
+        
+    })
+  
+
+    fetch(`/video/${vid}/addcom`,{
+        method:'POST',
+        body:JSON.stringify({
+            comment:comment
+        })
+    })
+    .then(function(res)
+    {
+      console.log("comment added successfully");
+    })
+    .catch(function(err)
+    {
+
+    })
+    
 }
 
 function searchfn()
@@ -294,4 +474,6 @@ if(m.Poster=="N/A"){
     })
     
 }
+
+
 

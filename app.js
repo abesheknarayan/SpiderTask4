@@ -7,8 +7,12 @@ var passport=require("passport");
 var localStrategy=require("passport-local")
 var passportlocalmongoose=require("passport-local-mongoose");
 var user=require("./models/users");
+var comment=require("./models/comments");
 var flash=require("connect-flash");
 var app=express();
+app.use(express.json({
+    type:['application/json','text/plain']
+}))
 const port=3000;
 
 mongoose.connect("mongodb://localhost:27017/omdb",{
@@ -175,6 +179,51 @@ app.get("/movie/:mid/addtowatched",function(req,res)
 {
     watchedfn(req,res);
 })
+
+app.get("/comment/:vid",function(req,res)
+{
+    comment.find({videoId:req.params.vid},function(err,cmt)
+    {
+        if(err)
+        {
+            console.log(err);
+        }
+        else{
+           res.send({
+               cmt:cmt
+           })
+        }
+    })
+})
+app.get("/user",function(req,res)
+{
+    res.send({
+        user:req.user.username
+    })
+})
+
+app.post("/video/:vid/addcom",function(req,res)
+{
+    console.log(req.body);
+    comment.create({
+        comment:req.body.comment,
+        user:req.user.username,
+        videoId:req.params.vid
+    },function(err,cmt)
+    {
+        if(err)
+        {
+            console.log(err);
+        }
+        else{
+            console.log(cmt);
+        }
+    })
+})
+
+
+
+
 
 async function watchfn(req,res)
 {
